@@ -1,27 +1,46 @@
 <div align="center">
+
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:1e1b4b,50:4f46e5,100:6366f1&height=220&section=header&text=&fontSize=0" width="100%" />
+
 <br />
+
 <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=700&size=56&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&width=500&height=80&lines=BeingOG" alt="BeingOG" />
+
 <br />
+
 <img src="https://img.shields.io/badge/%E2%9A%A1_Level_up._Stay_OG.-6366F1?style=for-the-badge&labelColor=0a0a0f" alt="Tagline" />
+
 <br /><br />
+
 <p>The all-in-one productivity, accountability, and AI-coaching platform<br />for students who refuse to be average.</p>
+
 <br />
+
 <a href="#-roadmap"><img src="https://img.shields.io/badge/Status-In_Development-6366F1?style=flat-square&logo=statuspage&logoColor=white" alt="Status" /></a>&nbsp;
 <img src="https://img.shields.io/badge/License-MIT-22c55e?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License" />&nbsp;
 <img src="https://img.shields.io/badge/Next.js-15-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js" />&nbsp;
 <img src="https://img.shields.io/badge/NestJS-11-E0234E?style=flat-square&logo=nestjs&logoColor=white" alt="NestJS" />&nbsp;
 <img src="https://img.shields.io/badge/PostgreSQL-17-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" />&nbsp;
 <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+
 <br /><br />
+
 <a href="#">🌐 Live Demo</a> &nbsp;&nbsp;·&nbsp;&nbsp; <a href="#">📖 Documentation</a> &nbsp;&nbsp;·&nbsp;&nbsp; <a href="#">🐛 Report Bug</a> &nbsp;&nbsp;·&nbsp;&nbsp; <a href="#">✨ Request Feature</a>
+
 <br />
+
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
+
 </div>
+
 <br />
+
 <!-- ═══════════════════════ WHAT IS BEINGOG ═══════════════════════ -->
+
 <h2 align="center">🌟 What is BeingOG?</h2>
+
 <br />
+
 <div align="center">
 <table>
 <tr><td>
@@ -37,7 +56,9 @@ It combines <b>habit tracking</b>, <b>study analytics</b>, <b>real-time social a
 </td></tr>
 </table>
 </div>
+
 <br />
+
 <table>
 <tr>
 <td width="50%" valign="top">
@@ -52,14 +73,21 @@ It combines <b>habit tracking</b>, <b>study analytics</b>, <b>real-time social a
 </td>
 </tr>
 </table>
+
 <br />
+
 <div align="center">
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
 </div>
+
 <br />
+
 <!-- ═══════════════════════ CORE FEATURES ═══════════════════════ -->
+
 <h2 align="center">✨ Core Features</h2>
+
 <br />
+
 <table>
 <tr>
 <td width="50%" valign="top">
@@ -126,15 +154,23 @@ It combines <b>habit tracking</b>, <b>study analytics</b>, <b>real-time social a
 </td>
 </tr>
 </table>
+
 <br />
+
 <div align="center">
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
 </div>
+
 <br />
+
 <!-- ═══════════════════════ DESIGN PHILOSOPHY ═══════════════════════ -->
+
 <h2 align="center">🎨 Design Philosophy</h2>
+
 <p align="center"><i>BeingOG is designed to feel like a funded startup product, not a college assignment.<br />Every screen is built around four principles:</i></p>
+
 <br />
+
 <div align="center">
 <table>
 <tr>
@@ -165,15 +201,23 @@ It combines <b>habit tracking</b>, <b>study analytics</b>, <b>real-time social a
 </tr>
 </table>
 </div>
+
 <br />
+
 <div align="center">
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
 </div>
+
 <br />
+
 <!-- ═══════════════════════ TECH STACK ═══════════════════════ -->
+
 <h2 align="center">🛠️ Tech Stack</h2>
+
 <p align="center"><i>Modern. Scalable. Production-grade.</i></p>
+
 <br />
+
 <div align="center">
 <table>
 <tr>
@@ -247,15 +291,23 @@ It combines <b>habit tracking</b>, <b>study analytics</b>, <b>real-time social a
 </tr>
 </table>
 </div>
+
 <br />
+
 <div align="center">
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
 </div>
+
 <br />
+
 <!-- ═══════════════════════ ARCHITECTURE ═══════════════════════ -->
+
 <h2 align="center">🏗️ Architecture</h2>
+
 <p align="center"><i>BeingOG follows a <b>polyglot microservices architecture</b> — three independently deployable<br />services communicating over HTTP and WebSockets.</i></p>
+
 <br />
+
 <div align="center">
 <table>
 <tr>
@@ -322,19 +374,28 @@ It combines <b>habit tracking</b>, <b>study analytics</b>, <b>real-time social a
 </tr>
 </table>
 </div>
+
 <br />
+
 <div align="center">
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
 </div>
+
 <br />
+
 <!-- ═══════════════════════ PROJECT STRUCTURE ═══════════════════════ -->
+
 <h2 align="center">📂 Project Structure</h2>
+
 <br />
+
 <div align="center">
 <table>
 <tr>
 <td>
+
 <br />
+
 <pre>
 BeingOG/
 │
@@ -359,19 +420,28 @@ BeingOG/
 ├── turbo.json                         # Turborepo config
 └── README.md
 </pre>
+
 <br />
+
 </td>
 </tr>
 </table>
 </div>
+
 <br />
+
 <div align="center">
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
 </div>
+
 <br />
+
 <!-- ═══════════════════════ ROADMAP ═══════════════════════ -->
+
 <h2 align="center">🗺️ Roadmap</h2>
+
 <br />
+
 <div align="center">
 <table>
 <tr>
@@ -460,19 +530,30 @@ BeingOG/
 </tr>
 </table>
 </div>
+
 <br />
+
 <div align="center">
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
 </div>
+
 <br />
+
 <!-- ═══════════════════════ GETTING STARTED ═══════════════════════ -->
+
 <h2 align="center">🚀 Getting Started</h2>
+
 <br />
+
 > [!NOTE]
 > **BeingOG** is currently in active development. Full setup instructions will be published as each phase is completed.
+
 <br />
+
 <h3 align="center">Prerequisites</h3>
+
 <br />
+
 <div align="center">
 <table>
 <tr>
@@ -484,40 +565,68 @@ BeingOG/
 </tr>
 </table>
 </div>
+
 <br />
+
 <h3 align="center">Local Setup <sup>(coming soon)</sup></h3>
+
 <br />
+
 ```bash
 git clone https://github.com/ombhavikatti/BeingOG.git
 cd BeingOG
 pnpm install
 pnpm dev
 ```
+
 <br />
+
 <div align="center">
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
 </div>
+
 <br />
+
 <!-- ═══════════════════════ CONTRIBUTING ═══════════════════════ -->
+
 <h2 align="center">🤝 Contributing</h2>
+
 <p align="center">BeingOG is currently a solo build, but contributions, ideas, and feedback<br />are welcome once we reach <b>v1.0</b>.</p>
+
 <br />
+
 <!-- ═══════════════════════ LICENSE ═══════════════════════ -->
+
 <h2 align="center">📜 License</h2>
+
 <p align="center">Distributed under the <b>MIT License</b>. See <code>LICENSE</code> for details.</p>
+
 <br />
+
 <div align="center">
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
 </div>
+
 <br />
+
 <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+
 <div align="center">
+
 <br />
+
 <p>Built with obsession by <b><a href="https://github.com/ombhavikatti">Om Bhavikatti</a></b></p>
+
 <p><i>"You don't rise to the level of your goals. You fall to the level of your systems."</i></p>
+
 <p><b>⭐ If this project inspires you, star the repo — it fuels the grind.</b></p>
+
 <br />
+
 <a href="#"><img src="https://img.shields.io/badge/▲_Back_to_Top-6366F1?style=for-the-badge&labelColor=1e1b4b" /></a>
+
 <br /><br />
+
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:1e1b4b,50:4f46e5,100:6366f1&height=120&section=footer" width="100%" />
+
 </div>
