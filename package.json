@@ -1,0 +1,37 @@
+{
+  "name": "beingog",
+  "version": "0.1.0",
+  "private": true,
+  "description": "BeingOG — Level up. Stay OG. A premium productivity, accountability & AI-coaching platform for students.",
+  "author": "Om Bhavikatti <ombhavikatti05@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ombhavikatti/BeingOG.git"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+  "dev": "turbo run dev",
+  "build": "turbo run build",
+  "lint": "turbo run lint",
+  "test": "turbo run test",
+  "type-check": "turbo run type-check",
+  "clean": "turbo run clean && rm -rf node_modules"
+},
+  "keywords": [
+    "productivity",
+    "student",
+    "habit-tracker",
+    "gamified",
+    "accountability",
+    "ai-coach",
+    "monorepo",
+    "nextjs",
+    "nestjs",
+    "fastapi"
+  ]
+}

@@ -1,0 +1,11 @@
+# ==============================================================================
+# pnpm workspace configuration for BeingOG monorepo
+#
+# This file tells pnpm which folders contain packages.
+# "apps/*"     → all folders inside apps/ (web, api, ai)
+# "packages/*" → all folders inside packages/ (ui, types, config, utils)
+# ==============================================================================
+
+packages:
+  - "apps/*"
+  - "packages/*"
