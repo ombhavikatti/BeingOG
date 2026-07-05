@@ -137,31 +137,50 @@ BeingOG is designed to feel like a **funded startup product**, not a college ass
 <br />
 
 ---
-
 ## 🏗️ Architecture
 
-┌────────────────────────────────────────────────────────────┐
-│                        USERS                               │
-└──────────────────────────┬─────────────────────────────────┘
-                           │
-                           ▼
-┌────────────────────────────────────────────────────────────┐
-│           FRONTEND • Next.js 15 • Vercel                   │
-└──────────────────────────┬─────────────────────────────────┘
-                           │
-              ┌────────────┴────────────┐
-              ▼                         ▼
-┌──────────────────────────┐ ┌──────────────────────────┐
-│       BACKEND API        │ │      AI SERVICE          │
-│    NestJS • Railway      │ │    FastAPI • Railway     │
-└────────────┬─────────────┘ └────────────┬─────────────┘
-             │                            │
-    ┌────────┼─────────┐                  │
-    ▼        ▼         ▼                  ▼
-┌────────┐ ┌──────┐ ┌────────┐       ┌──────────┐
-│ Neon   │ │Redis │ │Cloud-  │       │   LLM    │
-│Postgres│ │Cache │ │ inary  │       │   APIs   │
-└────────┘ └──────┘ └────────┘       └──────────┘
+BeingOG follows a **polyglot microservices architecture** — three independently deployable services communicating over HTTP and WebSockets.
+
+```mermaid
+flowchart TD
+    U([👤 Users])
+
+    subgraph Frontend["🖥️ Frontend Layer"]
+        WEB[Next.js 15 App<br/>Deployed on Vercel]
+    end
+
+    subgraph Backend["⚙️ Backend Services"]
+        API[NestJS API<br/>REST + WebSockets]
+        AI[FastAPI AI Service<br/>LLM + Analytics]
+    end
+
+    subgraph Data["🗄️ Data Layer"]
+        PG[(PostgreSQL<br/>Neon)]
+        RD[(Redis<br/>Upstash)]
+        CL[Cloudinary<br/>Media Storage]
+    end
+
+    subgraph External["🌐 External"]
+        LLM[LLM APIs<br/>OpenAI / Claude]
+    end
+
+    U --> WEB
+    WEB -->|REST + WS| API
+    WEB -->|REST| AI
+    API --> PG
+    API --> RD
+    API --> CL
+    AI --> LLM
+    AI --> PG
+
+    classDef frontend fill:#000000,stroke:#6366F1,stroke-width:2px,color:#fff
+    classDef backend fill:#E0234E,stroke:#fff,stroke-width:2px,color:#fff
+    classDef data fill:#4169E1,stroke:#fff,stroke-width:2px,color:#fff
+    classDef external fill:#10B981,stroke:#fff,stroke-width:2px,color:#fff
+    class WEB frontend
+    class API,AI backend
+    class PG,RD,CL data
+    class LLM external
 
 
 <br />
@@ -169,26 +188,29 @@ BeingOG is designed to feel like a **funded startup product**, not a college ass
 ---
 
 ## 📂 Project Structure
-
-BeingOG/
-├── apps/
-│ ├── web/ # Next.js frontend (Vercel)
-│ ├── api/ # NestJS backend (Railway)
-│ └── ai/ # FastAPI AI service (Railway)
+<pre>
+<b>BeingOG/</b>
 │
-├── packages/
-│ ├── ui/ # Shared React components
-│ ├── types/ # Shared TypeScript types
-│ ├── config/ # Shared ESLint / TS / Tailwind configs
-│ └── utils/ # Shared utility functions
+├── <b>apps/</b>                     <i># All runnable applications</i>
+│   ├── web/                  <i># Next.js frontend  → Vercel</i>
+│   ├── api/                  <i># NestJS backend    → Railway</i>
+│   └── ai/                   <i># FastAPI AI service → Railway</i>
 │
-├── docs/ # Architecture & feature docs
-├── .github/workflows/ # CI/CD pipelines
-├── pnpm-workspace.yaml # Monorepo definition
-├── turbo.json # Turborepo config
+├── <b>packages/</b>                 <i># Shared code between apps</i>
+│   ├── ui/                   <i># Reusable React components</i>
+│   ├── types/                <i># Shared TypeScript types</i>
+│   ├── config/               <i># Shared ESLint / TS / Tailwind configs</i>
+│   └── utils/                <i># Shared utility functions</i>
+│
+├── <b>docs/</b>                     <i># Architecture &amp; feature docs</i>
+├── <b>.github/</b>
+│   └── workflows/            <i># CI/CD pipelines</i>
+│
+├── .gitignore
+├── pnpm-workspace.yaml       <i># Monorepo definition</i>
+├── turbo.json                <i># Turborepo config</i>
 └── README.md
-
-
+</pre>
 
 <br />
 
@@ -251,4 +273,4 @@ Built with obsession by Om Bhavikatti
 <br />
 ⭐ If this project inspires you, star the repo — it fuels the grind.
 
-</div> ```
+</div> 
