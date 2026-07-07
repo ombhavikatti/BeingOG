@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* ============================================================
+   🎨 BeingOG Design System — Tailwind Theme
+   Single source of truth for colors, fonts, radii, shadows.
+   Referenced from docs/design-system.md
+   ============================================================ */
+
+@theme {
+  /* ─────────────── Fonts ─────────────── */
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* ─────────────── Brand Colors ─────────────── */
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
+  --color-primary-300: #a5b4fc;
+  --color-primary-400: #818cf8;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5; /* Deep Indigo — main brand */
+  --color-primary-700: #4338ca;
+  --color-primary-800: #3730a3;
+  --color-primary-900: #312e81;
+
+  --color-secondary-400: #a78bfa;
+  --color-secondary-500: #8b5cf6; /* Royal Purple */
+  --color-secondary-600: #7c3aed;
+
+  --color-success-400: #34d399;
+  --color-success-500: #10b981; /* Emerald — XP, achievements */
+  --color-success-600: #059669;
+
+  --color-streak-400: #fbbf24;
+  --color-streak-500: #f59e0b; /* Amber — streaks, fire */
+  --color-streak-600: #d97706;
+
+  --color-danger-400: #f87171;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+
+  /* ─────────────── Radii ─────────────── */
+  --radius-button: 0.625rem; /* 10px */
+  --radius-card: 1rem; /* 16px */
+  --radius-modal: 1.25rem; /* 20px */
+  --radius-pill: 9999px;
+
+  /* ─────────────── Shadows ─────────────── */
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-elevated:
+    0 4px 6px rgba(0, 0, 0, 0.04), 0 10px 24px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.35);
+}
+
+/* ============================================================
+   🌗 Theme-Aware Semantic Tokens
+   These change based on light/dark mode.
+   Use these in components — NEVER hardcode colors.
+   ============================================================ */
+
+:root {
+  --background: #fafafa;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --border: #e5e5e7;
+  --border-subtle: #f5f5f5;
+  --text-primary: #0a0a0f;
+  --text-secondary: #525252;
+  --text-muted: #a1a1aa;
+}
+
+.dark {
+  --background: #0a0a0f;
+  --surface: #111118;
+  --surface-elevated: #1a1a24;
+  --border: #27272f;
+  --border-subtle: #1f1f27;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+}
+
+/* Register semantic tokens so Tailwind classes like `bg-background` work */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+}
+
+/* ============================================================
+   Base Layer — Professional Defaults
+   ============================================================ */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  background-color: var(--background);
+  color: var(--text-primary);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Better selection colors */
+::selection {
+  background-color: var(--color-primary-500);
+  color: white;
+}
+
+/* Cleaner focus rings */
+*:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

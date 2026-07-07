@@ -1,0 +1,22 @@
+{
+    "css.lint.unknownAtRules": "ignore",
+    "editor.quickSuggestions": {
+        "strings": "on"
+    },
+    "tailwindCSS.experimental.classRegex": [
+        [
+            "clsx\\(([^)]*)\\)",
+            "(?:'|\"|`)([^']*)(?:'|\"|`)"
+        ],
+        [
+            "cn\\(([^)]*)\\)",
+            "(?:'|\"|`)([^']*)(?:'|\"|`)"
+        ]
+    ],
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "editor.formatOnSave": true,
+    "js/ts.tsdk.path": "node_modules/typescript/lib",
+    "js/ts.tsdk.promptToUseWorkspaceVersion": true
+}

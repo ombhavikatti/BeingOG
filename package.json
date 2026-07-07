@@ -15,13 +15,13 @@
     "pnpm": ">=9"
   },
   "scripts": {
-  "dev": "turbo run dev",
-  "build": "turbo run build",
-  "lint": "turbo run lint",
-  "test": "turbo run test",
-  "type-check": "turbo run type-check",
-  "clean": "turbo run clean && rm -rf node_modules"
-},
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
   "keywords": [
     "productivity",
     "student",
@@ -33,5 +33,8 @@
     "nextjs",
     "nestjs",
     "fastapi"
-  ]
+  ],
+  "devDependencies": {
+    "turbo": "^2.10.3"
+  }
 }

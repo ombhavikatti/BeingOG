@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "usernamehw.errorlens",
+        "prisma.prisma",
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+    ]
+}
