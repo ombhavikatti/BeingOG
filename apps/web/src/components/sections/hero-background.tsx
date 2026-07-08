@@ -1,7 +1,6 @@
 /**
- * HeroBackground — premium ambient background for the hero section.
- * Composed of a soft grid + two floating gradient orbs.
- * Purely decorative — no interactivity, no accessibility label needed.
+ * HeroBackground — cinematic ambient background.
+ * Aurora blobs + grid pattern + noise = premium depth.
  */
 export function HeroBackground() {
   return (
@@ -9,37 +8,42 @@ export function HeroBackground() {
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
-      {/* Subtle dot grid */}
+      {/* Grid pattern with radial mask */}
+      <div className="absolute inset-0 hero-grid opacity-60 dark:opacity-30" />
+
+      {/* Aurora blob 1 — top-left, indigo */}
       <div
-        className="absolute inset-0 opacity-[0.15] dark:opacity-[0.08]"
+        className="aurora-blob absolute top-[-20%] left-[-10%] h-[600px] w-[600px] rounded-full opacity-40 dark:opacity-30 blur-3xl"
         style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
-          backgroundSize: "32px 32px",
-          color: "var(--text-muted)",
+          background:
+            "conic-gradient(from 90deg at 50% 50%, var(--color-primary-500), var(--color-secondary-500), var(--color-primary-500))",
         }}
       />
 
-      {/* Top-left indigo orb */}
+      {/* Aurora blob 2 — bottom-right, purple */}
       <div
-        className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full opacity-40 dark:opacity-30 blur-3xl"
+        className="aurora-blob-slow absolute bottom-[-20%] right-[-10%] h-[600px] w-[600px] rounded-full opacity-40 dark:opacity-30 blur-3xl"
         style={{
           background:
-            "radial-gradient(circle, var(--color-primary-500) 0%, transparent 70%)",
+            "conic-gradient(from 180deg at 50% 50%, var(--color-secondary-500), var(--color-primary-400), var(--color-secondary-500))",
         }}
       />
 
-      {/* Bottom-right purple orb */}
+      {/* Aurora blob 3 — center, emerald accent (very subtle) */}
       <div
-        className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full opacity-40 dark:opacity-30 blur-3xl"
+        className="aurora-blob absolute top-[30%] left-[40%] h-[400px] w-[400px] rounded-full opacity-20 dark:opacity-20 blur-3xl"
         style={{
           background:
-            "radial-gradient(circle, var(--color-secondary-500) 0%, transparent 70%)",
+            "conic-gradient(from 45deg at 50% 50%, var(--color-success-500), var(--color-primary-400), var(--color-success-500))",
+          animationDelay: "-10s",
         }}
       />
+
+      {/* Noise overlay — film-grain premium feel */}
+      <div className="noise-overlay" />
 
       {/* Fade at bottom for smooth section transition */}
-      <div className="absolute bottom-0 inset-x-0 h-32 bg-linear-to-b from-transparent to-background" />
+      <div className="absolute bottom-0 inset-x-0 h-32 bg-linear-to-b from-transparent to-background z-10" />
     </div>
   );
 }

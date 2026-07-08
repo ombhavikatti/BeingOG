@@ -16,6 +16,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { GlowCard } from "../glow-card";
 
 type Feature = {
   icon: LucideIcon;
@@ -124,53 +125,66 @@ export function Features() {
         <div className="mt-16 grid gap-6 md:mt-20 md:grid-cols-2 lg:gap-8">
           {features.map((feature, idx) => (
             <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.1,
-                ease: "easeOut",
-              }}
+  key={feature.title}
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-50px" }}
+  transition={{
+    duration: 0.5,
+    delay: idx * 0.1,
+    ease: "easeOut",
+  }}
+>
+  <GlowCard
+    glowColor={
+      feature.accent === "primary"
+        ? "rgba(99, 102, 241, 0.15)"
+        : feature.accent === "secondary"
+        ? "rgba(139, 92, 246, 0.15)"
+        : feature.accent === "success"
+        ? "rgba(16, 185, 129, 0.15)"
+        : "rgba(245, 158, 11, 0.15)"
+    }
+    className="h-full"
+  >
+    <Card className="relative h-full border-border/70 bg-surface backdrop-blur-sm transition-all duration-300 hover:border-primary-300/60 hover:shadow-elevated hover:-translate-y-1">
+      <CardHeader>
+        <div
+          className={cn(
+            "mb-4 grid h-12 w-12 place-items-center rounded-xl transition-transform group-hover:scale-110 group-hover:rotate-3",
+            accentStyles[feature.accent]
+          )}
+        >
+          <feature.icon className="h-6 w-6" strokeWidth={2} />
+        </div>
+        <CardTitle className="font-display text-2xl font-semibold tracking-tight">
+          {feature.title}
+        </CardTitle>
+        <CardDescription className="text-base leading-relaxed pt-1">
+          {feature.description}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ul className="space-y-2.5">
+          {feature.bullets.map((bullet) => (
+            <li
+              key={bullet}
+              className="flex items-start gap-3 text-sm text-text-secondary"
             >
-              <Card className="group h-full border-border/70 bg-surface transition-all duration-300 hover:border-primary-300 hover:shadow-elevated hover:-translate-y-1">
-                <CardHeader>
-                  <div
-                    className={cn(
-                      "mb-4 grid h-12 w-12 place-items-center rounded-xl transition-transform group-hover:scale-110",
-                      accentStyles[feature.accent]
-                    )}
-                  >
-                    <feature.icon className="h-6 w-6" strokeWidth={2} />
-                  </div>
-                  <CardTitle className="font-display text-2xl font-semibold tracking-tight">
-                    {feature.title}
-                  </CardTitle>
-                  <CardDescription className="text-base leading-relaxed pt-1">
-                    {feature.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2.5">
-                    {feature.bullets.map((bullet) => (
-                      <li
-                        key={bullet}
-                        className="flex items-start gap-3 text-sm text-text-secondary"
-                      >
-                        <span
-                          className={cn(
-                            "mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full",
-                            accentStyles[feature.accent].split(" ")[1]
-                          )}
-                        />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
+              <span
+                className={cn(
+                  "mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full",
+                  accentStyles[feature.accent].split(" ")[1]
+                )}
+              />
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  </GlowCard>
+</motion.div>
           ))}
         </div>
       </div>

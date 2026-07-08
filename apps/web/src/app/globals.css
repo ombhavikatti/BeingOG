@@ -264,3 +264,60 @@ body {
     border-color: var(--border);
   }
 }
+
+/* ============================================================
+   ✨ Aurora Animated Background
+   Used behind hero sections for cinematic depth.
+   ============================================================ */
+@keyframes aurora {
+  0%,
+  100% {
+    transform: translate(0%, 0%) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate(20%, -30%) rotate(90deg) scale(1.1);
+  }
+  50% {
+    transform: translate(-20%, 20%) rotate(180deg) scale(0.95);
+  }
+  75% {
+    transform: translate(30%, 10%) rotate(270deg) scale(1.05);
+  }
+}
+
+.aurora-blob {
+  will-change: transform;
+  animation: aurora 20s ease-in-out infinite;
+}
+
+.aurora-blob-slow {
+  animation: aurora 30s ease-in-out infinite reverse;
+}
+
+/* Grid pattern with radial mask (Vercel-style) */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(
+    ellipse 60% 50% at 50% 40%,
+    black 40%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 60% 50% at 50% 40%,
+    black 40%,
+    transparent 100%
+  );
+}
+
+/* Subtle noise texture overlay — adds premium film-grain feel */
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
