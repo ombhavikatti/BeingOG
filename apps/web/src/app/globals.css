@@ -1,11 +1,12 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 /* ============================================================
-   🎨 BeingOG Design System — Tailwind Theme
-   Single source of truth for colors, fonts, radii, shadows.
-   Referenced from docs/design-system.md
+   🎨 BeingOG Design System — Brand Tokens (Static)
+   These do NOT change with theme. Fonts, palette, radii, shadows.
    ============================================================ */
-
 @theme {
   /* ─────────────── Fonts ─────────────── */
   --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
@@ -41,9 +42,9 @@
   --color-danger-600: #dc2626;
 
   /* ─────────────── Radii ─────────────── */
-  --radius-button: 0.625rem; /* 10px */
-  --radius-card: 1rem; /* 16px */
-  --radius-modal: 1.25rem; /* 20px */
+  --radius-button: 0.625rem;
+  --radius-card: 1rem;
+  --radius-modal: 1.25rem;
   --radius-pill: 9999px;
 
   /* ─────────────── Shadows ─────────────── */
@@ -54,49 +55,179 @@
 }
 
 /* ============================================================
-   🌗 Theme-Aware Semantic Tokens
-   These change based on light/dark mode.
-   Use these in components — NEVER hardcode colors.
+   🌗 Theme-Aware Semantic Tokens (Light Mode)
+   Merges BeingOG tokens + shadcn/ui semantic tokens.
    ============================================================ */
-
 :root {
+  /* ── BeingOG surfaces & text ── */
   --background: #fafafa;
   --surface: #ffffff;
   --surface-elevated: #ffffff;
-  --border: #e5e5e7;
   --border-subtle: #f5f5f5;
   --text-primary: #0a0a0f;
   --text-secondary: #525252;
   --text-muted: #a1a1aa;
+
+  /* ── shadcn semantic tokens (mapped to BeingOG brand) ── */
+  --foreground: #0a0a0f;
+  --card: #ffffff;
+  --card-foreground: #0a0a0f;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0f;
+
+  /* Primary = BeingOG indigo (not shadcn grayscale) */
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+
+  /* Secondary = subtle surface */
+  --secondary: #f4f4f5;
+  --secondary-foreground: #0a0a0f;
+
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+
+  --accent: #eef2ff;
+  --accent-foreground: #4f46e5;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #e5e5e7;
+  --input: #e5e5e7;
+  --ring: #4f46e5;
+
+  --chart-1: #4f46e5;
+  --chart-2: #8b5cf6;
+  --chart-3: #10b981;
+  --chart-4: #f59e0b;
+  --chart-5: #ef4444;
+
+  --radius: 0.625rem;
+
+  --sidebar: #fafafa;
+  --sidebar-foreground: #0a0a0f;
+  --sidebar-primary: #4f46e5;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f4f4f5;
+  --sidebar-accent-foreground: #0a0a0f;
+  --sidebar-border: #e5e5e7;
+  --sidebar-ring: #4f46e5;
 }
 
+/* ============================================================
+   🌗 Theme-Aware Semantic Tokens (Dark Mode)
+   ============================================================ */
 .dark {
   --background: #0a0a0f;
   --surface: #111118;
   --surface-elevated: #1a1a24;
-  --border: #27272f;
   --border-subtle: #1f1f27;
   --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
   --text-muted: #71717a;
+
+  --foreground: #fafafa;
+  --card: #111118;
+  --card-foreground: #fafafa;
+  --popover: #111118;
+  --popover-foreground: #fafafa;
+
+  --primary: #818cf8;
+  --primary-foreground: #0a0a0f;
+
+  --secondary: #1a1a24;
+  --secondary-foreground: #fafafa;
+
+  --muted: #1a1a24;
+  --muted-foreground: #a1a1aa;
+
+  --accent: #1e1b4b;
+  --accent-foreground: #a5b4fc;
+
+  --destructive: #f87171;
+  --destructive-foreground: #0a0a0f;
+
+  --border: #27272f;
+  --input: #27272f;
+  --ring: #818cf8;
+
+  --chart-1: #818cf8;
+  --chart-2: #a78bfa;
+  --chart-3: #34d399;
+  --chart-4: #fbbf24;
+  --chart-5: #f87171;
+
+  --sidebar: #0a0a0f;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #818cf8;
+  --sidebar-primary-foreground: #0a0a0f;
+  --sidebar-accent: #1a1a24;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #27272f;
+  --sidebar-ring: #818cf8;
 }
 
-/* Register semantic tokens so Tailwind classes like `bg-background` work */
+/* ============================================================
+   Register semantic tokens so Tailwind utility classes work
+   (bg-background, text-foreground, border-border, etc.)
+   ============================================================ */
 @theme inline {
   --color-background: var(--background);
+  --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
   --color-border: var(--border);
   --color-border-subtle: var(--border-subtle);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 /* ============================================================
    Base Layer — Professional Defaults
    ============================================================ */
-
 html {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
@@ -110,21 +241,26 @@ body {
   min-height: 100vh;
   font-family: var(--font-body);
   background-color: var(--background);
-  color: var(--text-primary);
+  color: var(--foreground);
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
 }
 
-/* Better selection colors */
 ::selection {
   background-color: var(--color-primary-500);
   color: white;
 }
 
-/* Cleaner focus rings */
 *:focus-visible {
   outline: 2px solid var(--color-primary-500);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* shadcn base layer — border reset for all elements */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
 }
