@@ -15,13 +15,13 @@
     "pnpm": ">=9"
   },
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "type-check": "turbo run type-check",
-    "clean": "turbo run clean && rm -rf node_modules"
-  },
+  "dev": "pnpm exec turbo run dev",
+  "build": "pnpm exec turbo run build",
+  "lint": "pnpm exec turbo run lint",
+  "test": "pnpm exec turbo run test",
+  "type-check": "pnpm exec turbo run type-check",
+  "clean": "pnpm exec turbo run clean"
+},
   "keywords": [
     "productivity",
     "student",
