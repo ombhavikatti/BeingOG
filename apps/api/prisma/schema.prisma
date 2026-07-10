@@ -1,0 +1,100 @@
+// ==============================================================================
+// 🗄️  BeingOG Database Schema
+// ==============================================================================
+// This file defines the shape of our PostgreSQL database.
+// Prisma generates a fully-typed TypeScript client from this schema.
+//
+// Conventions:
+//   - Table names: singular PascalCase (User, Habit)
+//   - Column names: camelCase
+//   - Every table has: id (cuid), createdAt, updatedAt
+//   - Enums use SCREAMING_SNAKE_CASE
+// ==============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==============================================================================
+//  USER
+//  The account. Everything else in BeingOG belongs to a User.
+// ==============================================================================
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String    @unique
+  passwordHash  String? // nullable because OAuth users don't have passwords
+  name          String
+  avatarUrl     String?
+  bio           String?   @db.VarChar(280)
+  timezone      String    @default("Asia/Kolkata")
+  emailVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  habits        Habit[]
+
+  @@index([email])
+  @@index([username])
+}
+
+// ==============================================================================
+//  HABIT
+//  A trackable behavior a user wants to build (or break).
+//  E.g., "Study DSA", "Workout 30 min", "No social media".
+// ==============================================================================
+model Habit {
+  id          String       @id @default(cuid())
+  userId      String
+  name        String       @db.VarChar(120)
+  description String?      @db.VarChar(500)
+  icon        String       @default("🎯") // any emoji
+  color       String       @default("#6366F1") // hex
+  frequency   Frequency    @default(DAILY)
+  target      Int          @default(1) // e.g., "do 3× per day" → target = 3
+  isArchived  Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  completions  HabitCompletion[]
+
+  @@index([userId])
+  @@index([userId, isArchived])
+}
+
+// ==============================================================================
+//  HABIT COMPLETION
+//  A single record: "User X completed habit Y on date Z".
+//  This is the core log — everything (streaks, heatmaps, stats) derives from this.
+// ==============================================================================
+model HabitCompletion {
+  id         String   @id @default(cuid())
+  habitId    String
+  completedAt DateTime @default(now())
+  note       String?  @db.VarChar(500)
+  createdAt  DateTime @default(now())
+
+  // Relations
+  habit      Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@index([habitId])
+  @@index([habitId, completedAt])
+}
+
+// ==============================================================================
+//  ENUMS
+// ==============================================================================
+enum Frequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+  CUSTOM
+}
