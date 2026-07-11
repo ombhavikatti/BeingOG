@@ -68,32 +68,37 @@ export function Hero() {
 
         {/* ─── CTAs ─── */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
-          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3"
-        >
-          <Button
-            size="lg"
-            className="min-w-[220px] h-14 text-base font-semibold shadow-elevated group relative overflow-hidden"
-          >
-            <span className="relative z-10 flex items-center">
-              Join the waitlist
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </span>
-            {/* Shine effect on hover */}
-            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="min-w-[220px] h-14 text-base font-semibold backdrop-blur bg-surface/50 hover:bg-surface"
-          >
-            <Sparkles className="mr-2 h-4 w-4" />
-            See how it works
-          </Button>
-        </motion.div>
+  initial={{ opacity: 0, y: 12 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
+  className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3"
+>
+ <Button
+  asChild
+  size="lg"
+  className="min-w-[220px] h-14 text-base font-semibold shadow-elevated group relative overflow-hidden"
+>
+  <Link href="/signup">
+    <span className="relative z-10 flex items-center">
+      Join the waitlist
+      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+    </span>
+    <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+  </Link>
+</Button>
 
+<Button
+  asChild
+  size="lg"
+  variant="outline"
+  className="min-w-[220px] h-14 text-base font-semibold backdrop-blur bg-surface/50 hover:bg-surface"
+>
+  <Link href="#how-it-works">
+    <Sparkles className="mr-2 h-4 w-4" />
+    See how it works
+  </Link>
+</Button>
+</motion.div>
         {/* ─── Trust row ─── */}
         <motion.div
           initial={{ opacity: 0 }}

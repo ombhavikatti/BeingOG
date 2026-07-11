@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
+import { AuthProvider } from "@/contexts/auth-context";
 
 // Display font — for hero text, section headings
 const spaceGrotesk = Space_Grotesk({
@@ -101,14 +102,16 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} font-body antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+       <ThemeProvider
+  attribute="class"
+  defaultTheme="system"
+  enableSystem
+  disableTransitionOnChange
+>
+  <AuthProvider>
+    {children}
+  </AuthProvider>
+</ThemeProvider>
       </body>
     </html>
   );

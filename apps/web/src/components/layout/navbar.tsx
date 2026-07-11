@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/auth-context";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   { href: "#features", label: "Features" },
@@ -70,13 +72,10 @@ export function Navbar() {
             <ThemeToggle />
 
             {/* Desktop CTAs */}
-            <div className="hidden md:flex items-center gap-2">
-              <Button variant="ghost" size="sm">
-                Sign in
-              </Button>
-              <Button size="sm">Join waitlist</Button>
-            </div>
-
+           {/* Desktop CTAs — conditional on auth state */}
+<div className="hidden md:flex items-center gap-2">
+  <DesktopAuthCTAs />
+</div>
             {/* Mobile menu trigger */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
@@ -118,16 +117,90 @@ export function Navbar() {
                 </nav>
 
                 <div className="mt-auto flex flex-col gap-2 border-t border-border p-6">
-                  <Button variant="outline" className="w-full">
-                    Sign in
-                  </Button>
-                  <Button className="w-full">Join waitlist</Button>
-                </div>
+  <MobileAuthCTAs onNavigate={() => setMobileOpen(false)} />
+</div>
               </SheetContent>
             </Sheet>
           </div>
         </div>
       </div>
     </header>
+  );
+}
+
+// ─── Auth-aware CTAs ───
+function DesktopAuthCTAs() {
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const router = useRouter();
+
+  if (isLoading) {
+    // Skeleton while hydrating from localStorage
+    return <div className="h-8 w-32 rounded-md bg-surface-elevated animate-pulse" />;
+  }
+
+  if (isAuthenticated && user) {
+    return (
+      <>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => router.push("/dashboard")}
+        >
+          Dashboard
+        </Button>
+        <Button
+          size="sm"
+          onClick={() => router.push("/dashboard")}
+          className="gap-2"
+        >
+          <span className="h-5 w-5 rounded-full bg-linear-to-br from-primary-400 to-secondary-500" />
+          {user.name.split(" ")[0]}
+        </Button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Button variant="ghost" size="sm" onClick={() => router.push("/login")}>
+        Sign in
+      </Button>
+      <Button size="sm" onClick={() => router.push("/signup")}>
+        Join waitlist
+      </Button>
+    </>
+  );
+}
+
+function MobileAuthCTAs({ onNavigate }: { onNavigate: () => void }) {
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
+  if (isLoading) {
+    return <div className="h-11 w-full rounded-md bg-surface-elevated animate-pulse" />;
+  }
+
+  const go = (path: string) => {
+    onNavigate();
+    router.push(path);
+  };
+
+  if (isAuthenticated) {
+    return (
+      <Button className="w-full" onClick={() => go("/dashboard")}>
+        Go to dashboard
+      </Button>
+    );
+  }
+
+  return (
+    <>
+      <Button variant="outline" className="w-full" onClick={() => go("/login")}>
+        Sign in
+      </Button>
+      <Button className="w-full" onClick={() => go("/signup")}>
+        Join waitlist
+      </Button>
+    </>
   );
 }

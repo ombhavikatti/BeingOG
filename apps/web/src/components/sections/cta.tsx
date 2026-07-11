@@ -12,13 +12,12 @@ export function CTA() {
 
   // Placeholder submit — real API wire-up in Phase 4
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!email) return;
-    // TODO: POST to /api/waitlist when backend exists
-    setStatus("success");
-    setEmail("");
-    setTimeout(() => setStatus("idle"), 4000);
-  };
+  e.preventDefault();
+  if (!email) return;
+  // Send them to signup with email prefilled via URL param
+  const params = new URLSearchParams({ email });
+  window.location.href = `/signup?${params.toString()}`;
+};
 
   return (
     <section className="relative py-24 md:py-32 bg-background">
