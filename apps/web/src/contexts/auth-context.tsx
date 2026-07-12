@@ -67,6 +67,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
+    // Listen for silent token refreshes (fired by apiRequest on 401 → refresh success)
+useEffect(() => {
+  function handleRefresh(event: Event) {
+    const detail = (event as CustomEvent<AuthResponse>).detail;
+    setAccessToken(detail.accessToken);
+    setUser(detail.user);
+  }
+  window.addEventListener("beingog:auth-refreshed", handleRefresh);
+  return () => {
+    window.removeEventListener("beingog:auth-refreshed", handleRefresh);
+  };
+}, []);
+
   // ─── Helpers ───
   function persistAuth(response: AuthResponse) {
     localStorage.setItem(STORAGE_KEYS.accessToken, response.accessToken);

@@ -101,11 +101,13 @@ export class AuthService {
     const refreshExpiresIn =
       this.config.get<string>('JWT_REFRESH_EXPIRES_IN') ?? '7d';
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: accessSecret,
       expiresIn: accessExpiresIn,
     } as any);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const refreshToken = await this.jwtService.signAsync(payload, {
       secret: refreshSecret,
       expiresIn: refreshExpiresIn,
@@ -122,5 +124,34 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+  // ─────────────────────────────────────────────────
+  //  REFRESH ACCESS TOKEN
+  // ─────────────────────────────────────────────────
+  async refreshAccessToken(refreshToken: string): Promise<AuthResponse> {
+    let payload: JwtTokenPayload;
+
+    // Verify the refresh token's signature + expiry
+    try {
+      payload = await this.jwtService.verifyAsync<JwtTokenPayload>(
+        refreshToken,
+        {
+          secret: this.config.get<string>('JWT_REFRESH_SECRET'),
+        },
+      );
+    } catch {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
+
+    // Make sure the user still exists (they might've deleted their account)
+    const user = await this.usersService.findById(payload.sub);
+    if (!user) {
+      throw new UnauthorizedException('User no longer exists');
+    }
+
+    this.logger.log(`🔁 Token refreshed: ${user.email}`);
+
+    // Issue a fresh set of tokens (rotating refresh tokens = security best practice)
+    return this.buildAuthResponse(user);
   }
 }
