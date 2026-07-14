@@ -13,6 +13,7 @@ function startOAuth(provider: "google" | "github") {
   }
   window.location.href = `${API_URL}/auth/${provider}`;
 }
+
 /**
  * "Continue with Google" button — kicks off the OAuth flow.
  */

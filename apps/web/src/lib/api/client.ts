@@ -1,10 +1,13 @@
 import type { ApiError, AuthResponse } from "./types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
-if (!API_URL) {
-  throw new Error(
-    "NEXT_PUBLIC_API_URL is not defined. Add it to .env.local.",
+// Warn (don't throw) if missing — allows the build to succeed even if env is unset
+if (!API_URL && typeof window !== "undefined") {
+  // eslint-disable-next-line no-console
+  console.warn(
+    "⚠️  NEXT_PUBLIC_API_URL is not defined. API calls will fail. " +
+      "Add it to .env.local (dev) or Vercel Environment Variables (prod).",
   );
 }
 

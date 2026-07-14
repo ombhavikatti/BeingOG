@@ -6,6 +6,7 @@ import { Loader2, ShieldCheck, ShieldAlert } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { HeroBackground } from "@/components/sections/hero-background";
+export const dynamic = "force-dynamic";
 
 type Status = "loading" | "success" | "error";
 
