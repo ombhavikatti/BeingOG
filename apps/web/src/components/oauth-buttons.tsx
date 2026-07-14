@@ -6,9 +6,13 @@ import { Button } from "@/components/ui/button";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 function startOAuth(provider: "google" | "github") {
+  if (!API_URL) {
+    console.error("NEXT_PUBLIC_API_URL is not defined");
+    alert("Login is temporarily unavailable. Please try again in a moment.");
+    return;
+  }
   window.location.href = `${API_URL}/auth/${provider}`;
 }
-
 /**
  * "Continue with Google" button — kicks off the OAuth flow.
  */

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, ShieldCheck, ShieldAlert } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
@@ -9,13 +9,43 @@ import { HeroBackground } from "@/components/sections/hero-background";
 
 type Status = "loading" | "success" | "error";
 
+/**
+ * Outer wrapper — required because useSearchParams() needs a Suspense boundary
+ * when the page is statically-rendered (Next.js 15+ requirement).
+ */
 export default function OAuthCallbackPage() {
+  return (
+    <Suspense fallback={<CallbackLoading />}>
+      <OAuthCallbackInner />
+    </Suspense>
+  );
+}
+
+function CallbackLoading() {
+  return (
+    <main className="relative min-h-screen flex items-center justify-center bg-background px-4 py-12">
+      <HeroBackground />
+      <div className="relative z-10 w-full max-w-md">
+        <div className="rounded-2xl border border-border bg-surface/80 backdrop-blur-xl p-10 shadow-elevated text-center">
+          <div className="mx-auto mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-primary-500/10">
+            <Loader2 className="h-7 w-7 text-primary-500 animate-spin" />
+          </div>
+          <h1 className="font-display text-2xl font-bold tracking-tight">
+            Preparing…
+          </h1>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function OAuthCallbackInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setAuthFromTokens } = useAuth();
   const [status, setStatus] = useState<Status>("loading");
   const [errorMsg, setErrorMsg] = useState<string>("");
-  const hasRun = useRef(false); // Prevent double-execution in React Strict Mode
+  const hasRun = useRef(false);
 
   useEffect(() => {
     if (hasRun.current) return;
@@ -25,7 +55,6 @@ export default function OAuthCallbackPage() {
     const refreshToken = searchParams.get("refreshToken");
     const error = searchParams.get("error");
 
-    // Backend can pass ?error=... if OAuth failed
     if (error) {
       setStatus("error");
       setErrorMsg(decodeURIComponent(error));
@@ -42,7 +71,6 @@ export default function OAuthCallbackPage() {
       try {
         await setAuthFromTokens({ accessToken, refreshToken });
         setStatus("success");
-        // Small delay so user sees the success state briefly
         setTimeout(() => router.replace("/dashboard"), 600);
       } catch (err) {
         setStatus("error");
