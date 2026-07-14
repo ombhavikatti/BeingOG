@@ -57,7 +57,7 @@ export class AuthService {
 
     this.logger.log(`📝 New user registered: ${user.email}`);
 
-    return this.buildAuthResponse(user);
+    return this.issueTokensForUser(user);
   }
 
   // ─────────────────────────────────────────────────
@@ -74,20 +74,47 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const passwordValid = await bcrypt.compare(dto.password, user.passwordHash);
+    const passwordValid = await bcrypt.compare(dto.password,user.passwordHash);
     if (!passwordValid) {
       throw new UnauthorizedException('Invalid email or password');
     }
 
     this.logger.log(`🔓 User logged in: ${user.email}`);
 
-    return this.buildAuthResponse(user);
+    return this.issueTokensForUser(user);
   }
 
   // ─────────────────────────────────────────────────
-  //  HELPERS
+  //  REFRESH ACCESS TOKEN
   // ─────────────────────────────────────────────────
-  private async buildAuthResponse(user: User): Promise<AuthResponse> {
+  async refreshAccessToken(refreshToken: string): Promise<AuthResponse> {
+    let payload: JwtTokenPayload;
+
+    try {
+      payload = await this.jwtService.verifyAsync<JwtTokenPayload>(
+        refreshToken,
+        {
+          secret: this.config.get<string>('JWT_REFRESH_SECRET'),
+        },
+      );
+    } catch {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
+
+    const user = await this.usersService.findById(payload.sub);
+    if (!user) {
+      throw new UnauthorizedException('User no longer exists');
+    }
+
+    this.logger.log(`🔁 Token refreshed: ${user.email}`);
+
+    return this.issueTokensForUser(user);
+  }
+
+  // ─────────────────────────────────────────────────
+  //  ISSUE TOKENS (public — called by OAuth flow too)
+  // ─────────────────────────────────────────────────
+  async issueTokensForUser(user: User): Promise<AuthResponse> {
     const payload: JwtTokenPayload = {
       sub: user.id,
       email: user.email,
@@ -124,34 +151,5 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
-  }
-  // ─────────────────────────────────────────────────
-  //  REFRESH ACCESS TOKEN
-  // ─────────────────────────────────────────────────
-  async refreshAccessToken(refreshToken: string): Promise<AuthResponse> {
-    let payload: JwtTokenPayload;
-
-    // Verify the refresh token's signature + expiry
-    try {
-      payload = await this.jwtService.verifyAsync<JwtTokenPayload>(
-        refreshToken,
-        {
-          secret: this.config.get<string>('JWT_REFRESH_SECRET'),
-        },
-      );
-    } catch {
-      throw new UnauthorizedException('Invalid or expired refresh token');
-    }
-
-    // Make sure the user still exists (they might've deleted their account)
-    const user = await this.usersService.findById(payload.sub);
-    if (!user) {
-      throw new UnauthorizedException('User no longer exists');
-    }
-
-    this.logger.log(`🔁 Token refreshed: ${user.email}`);
-
-    // Issue a fresh set of tokens (rotating refresh tokens = security best practice)
-    return this.buildAuthResponse(user);
   }
 }

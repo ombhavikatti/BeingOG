@@ -21,27 +21,34 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!accessToken) {
-      setLoading(false);
-      return;
-    }
+ useEffect(() => {
+  if (!accessToken) return;
 
-    apiRequest<MeResponse>("/auth/me", { accessToken })
-      .then((res) => {
-        setServerUser(res.user);
-        setError(null);
-      })
-      .catch((err) => {
-        if (err instanceof ApiRequestError) {
-          setError(`${err.status}: ${err.displayMessage}`);
-        } else {
-          setError("Unknown error");
-        }
-      })
-      .finally(() => setLoading(false));
-  }, [accessToken]);
+  let cancelled = false;
+  setLoading(true);
 
+  apiRequest<MeResponse>("/auth/me", { accessToken })
+    .then((res) => {
+      if (cancelled) return;
+      setServerUser(res.user);
+      setError(null);
+    })
+    .catch((err) => {
+      if (cancelled) return;
+      if (err instanceof ApiRequestError) {
+        setError(`${err.status}: ${err.displayMessage}`);
+      } else {
+        setError("Unknown error");
+      }
+    })
+    .finally(() => {
+      if (!cancelled) setLoading(false);
+    });
+
+  return () => {
+    cancelled = true;
+  };
+}, [accessToken]);
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-6 py-12">
       <div className="text-center max-w-lg w-full">

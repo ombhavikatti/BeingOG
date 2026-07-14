@@ -5,6 +5,8 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { GoogleStrategy } from './strategies/google.strategy';
+import { GithubStrategy } from './strategies/github.strategy';
 
 @Module({
   imports: [
@@ -13,7 +15,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     JwtModule.register({}), // We sign per-token with different secrets
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, GoogleStrategy, GithubStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

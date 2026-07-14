@@ -8,8 +8,6 @@ import { Input } from "@/components/ui/input";
 
 export function CTA() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "success">("idle");
-
   // Placeholder submit — real API wire-up in Phase 4
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault();
@@ -79,8 +77,8 @@ export function CTA() {
                 variant="secondary"
                 className="h-12 w-full sm:w-auto bg-white text-primary-700 hover:bg-white/95 shadow-soft font-semibold"
               >
-                {status === "success" ? "You're in! 🎉" : "Join waitlist"}
-                {status !== "success" && <ArrowRight className="ml-1 h-4 w-4" />}
+                Join waitlist
+<ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </form>
 

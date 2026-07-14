@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth, ApiRequestError } from "@/contexts/auth-context";
 import { HeroBackground } from "@/components/sections/hero-background";
+import { GoogleButton, GitHubButton } from "@/components/oauth-buttons";
 
 // ─── Schema (matches backend RegisterDto) ───
 const signupSchema = z.object({
@@ -102,6 +103,24 @@ export default function SignupPage() {
               Create your account and start compounding.
             </p>
           </div>
+
+          {/* OAuth buttons */}
+<div className="space-y-2 mb-6">
+  <GoogleButton />
+  <GitHubButton />
+</div>
+
+{/* Divider */}
+<div className="relative mb-6">
+  <div className="absolute inset-0 flex items-center">
+    <span className="w-full border-t border-border" />
+  </div>
+  <div className="relative flex justify-center text-xs uppercase tracking-widest">
+    <span className="bg-surface px-2 text-text-muted font-mono">
+      or with email
+    </span>
+  </div>
+</div>
 
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

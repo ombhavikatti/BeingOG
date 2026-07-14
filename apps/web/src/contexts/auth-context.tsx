@@ -26,7 +26,10 @@ interface AuthContextValue {
   signup: (data: SignupData) => Promise<void>;
   login: (data: LoginData) => Promise<void>;
   logout: () => void;
+  setAuthFromTokens: (tokens: { accessToken: string; refreshToken: string }) => Promise<void>;  // ← NEW
 }
+
+
 
 interface SignupData {
   email: string;
@@ -50,6 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  
 
   // On mount, hydrate from localStorage
   useEffect(() => {
@@ -118,21 +122,40 @@ useEffect(() => {
     clearAuth();
     // TODO Phase 4.15: call backend to invalidate refresh token
   }
+  /**
+ * Used by the OAuth callback page — accepts tokens directly (bypassing password login),
+ * fetches the user profile from /auth/me, and persists everything.
+ */
+async function setAuthFromTokens(tokens: {
+  accessToken: string;
+  refreshToken: string;
+}) {
+  // Fetch user profile with the fresh access token
+  const response = await apiRequest<{ user: AuthUser }>("/auth/me", {
+    accessToken: tokens.accessToken,
+  });
+  persistAuth({
+    user: response.user,
+    accessToken: tokens.accessToken,
+    refreshToken: tokens.refreshToken,
+  });
+}
 
   return (
     <AuthContext.Provider
-      value={{
-        user,
-        accessToken,
-        isLoading,
-        isAuthenticated: !!user && !!accessToken,
-        signup,
-        login,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  value={{
+    user,
+    accessToken,
+    isLoading,
+    isAuthenticated: !!user && !!accessToken,
+    signup,
+    login,
+    logout,
+    setAuthFromTokens,   // ← ADD THIS LINE
+  }}
+>
+  {children}
+</AuthContext.Provider>
   );
 }
 

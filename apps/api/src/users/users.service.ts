@@ -42,7 +42,60 @@ export class UsersService {
 
     return this.prisma.user.create({ data });
   }
+  // ─────────────────────────────────────────────────
+  //  CREATE FROM OAUTH (no password)
+  // ─────────────────────────────────────────────────
+  async createFromOAuth(data: {
+    email: string;
+    name: string;
+    avatarUrl?: string;
+  }): Promise<User> {
+    // Auto-generate a username from the email prefix
+    // e.g., "om@gmail.com" → "om", then "om1", "om2" if taken
+    const baseUsername = data.email
+      .split('@')[0]
+      .toLowerCase()
+      .replace(/[^a-z0-9_]/g, '_')
+      .slice(0, 20);
 
+    let username = baseUsername;
+    let suffix = 0;
+    while (await this.prisma.user.findUnique({ where: { username } })) {
+      suffix += 1;
+      username = `${baseUsername.slice(0, 18)}${suffix}`.slice(0, 20);
+    }
+
+    return this.prisma.user.create({
+      data: {
+        email: data.email.toLowerCase().trim(),
+        username,
+        name: data.name.trim(),
+        avatarUrl: data.avatarUrl,
+        passwordHash: null, // OAuth users have no password
+        emailVerified: true, // Google already verified their email!
+      },
+    });
+  }
+
+  // ─────────────────────────────────────────────────
+  //  FIND OR CREATE FROM OAUTH
+  // ─────────────────────────────────────────────────
+  async findOrCreateFromOAuth(data: {
+    email: string;
+    name: string;
+    avatarUrl?: string;
+  }): Promise<User> {
+    const existing = await this.findByEmail(data.email.toLowerCase().trim());
+    if (existing) {
+      // User already exists (maybe they used password before) → just log them in
+      // Optionally: update their avatarUrl if it changed
+      if (data.avatarUrl && existing.avatarUrl !== data.avatarUrl) {
+        return this.update(existing.id, { avatarUrl: data.avatarUrl });
+      }
+      return existing;
+    }
+    return this.createFromOAuth(data);
+  }
   // ─────────────────────────────────────────────────
   //  READ
   // ─────────────────────────────────────────────────
