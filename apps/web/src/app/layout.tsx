@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/auth-context";
+import { QueryProvider } from "@/providers/query-provider";
 
 // Display font — for hero text, section headings
 const spaceGrotesk = Space_Grotesk({
@@ -108,10 +109,11 @@ export default function RootLayout({
   enableSystem
   disableTransitionOnChange
 >
-  <AuthProvider>
-    {children}
-  </AuthProvider>
+  <QueryProvider>
+    <AuthProvider>{children}</AuthProvider>
+  </QueryProvider>
 </ThemeProvider>
+
       </body>
     </html>
   );
