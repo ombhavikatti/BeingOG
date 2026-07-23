@@ -18,19 +18,11 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import type { AuthenticatedUser } from '../auth/decorators/current-user.decorator';
 
-/**
- * All /api/habits routes require a valid JWT.
- * Ownership is enforced inside HabitsService — no habit leaks across users.
- */
 @Controller('habits')
 @UseGuards(JwtAuthGuard)
 export class HabitsController {
   constructor(private readonly habitsService: HabitsService) {}
 
-  /**
-   * POST /api/habits
-   * Create a new habit for the logged-in user.
-   */
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(
@@ -40,10 +32,6 @@ export class HabitsController {
     return this.habitsService.create(user.id, dto);
   }
 
-  /**
-   * GET /api/habits?includeArchived=true
-   * List habits for the logged-in user.
-   */
   @Get()
   findAll(
     @CurrentUser() user: AuthenticatedUser,
@@ -54,10 +42,6 @@ export class HabitsController {
     });
   }
 
-  /**
-   * GET /api/habits/:id
-   * Get one habit by ID (only if it belongs to the user).
-   */
   @Get(':id')
   findOne(
     @CurrentUser() user: AuthenticatedUser,
@@ -66,10 +50,6 @@ export class HabitsController {
     return this.habitsService.findOneForUser(user.id, id);
   }
 
-  /**
-   * PATCH /api/habits/:id
-   * Update a habit (name, color, target, archive, etc.).
-   */
   @Patch(':id')
   update(
     @CurrentUser() user: AuthenticatedUser,
@@ -79,10 +59,6 @@ export class HabitsController {
     return this.habitsService.update(user.id, id, dto);
   }
 
-  /**
-   * DELETE /api/habits/:id
-   * Hard-delete a habit (and all its completions via cascade).
-   */
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   remove(
@@ -90,5 +66,31 @@ export class HabitsController {
     @Param('id') id: string,
   ) {
     return this.habitsService.remove(user.id, id);
+  }
+
+  /**
+   * POST /api/habits/:id/complete
+   * Mark habit as done for today (idempotent).
+   */
+  @Post(':id/complete')
+  @HttpCode(HttpStatus.OK)
+  completeToday(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+  ) {
+    return this.habitsService.completeToday(user.id, id);
+  }
+
+  /**
+   * DELETE /api/habits/:id/complete
+   * Undo today's completion.
+   */
+  @Delete(':id/complete')
+  @HttpCode(HttpStatus.OK)
+  uncompleteToday(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+  ) {
+    return this.habitsService.uncompleteToday(user.id, id);
   }
 }
