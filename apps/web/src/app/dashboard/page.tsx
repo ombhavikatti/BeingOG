@@ -3,8 +3,8 @@
 import { useAuth } from "@/contexts/auth-context";
 import { useHabits } from "@/hooks/use-habits";
 import { Loader2, Target, Flame, TrendingUp } from "lucide-react";
-import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 import { CreateHabitDialog } from "@/components/habits/create-habit-dialog";
+import { HabitCard } from "@/components/habits/habit-card";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +16,9 @@ export default function DashboardPage() {
   const hour = new Date().getHours();
   const greeting =
     hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+
+  const completedCount = habits?.filter((h) => h.completedToday).length ?? 0;
+  const totalCount = habits?.length ?? 0;
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
@@ -33,12 +36,12 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* ─── Stats row (placeholders — real numbers come in Phase 5.7/5.8) ─── */}
+      {/* ─── Stats row ─── */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <StatCard
           icon={Target}
-          label="Active habits"
-          value={habits?.length ?? 0}
+          label="Done today"
+          value={`${completedCount} / ${totalCount}`}
           accent="primary"
         />
         <StatCard icon={Flame} label="Current streak" value={0} accent="streak" />
@@ -53,11 +56,10 @@ export default function DashboardPage() {
       {/* ─── Habits section ─── */}
       <section>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-display text-xl font-semibold">Today's habits</h2>
-          <div className="flex items-center justify-between mb-4">
-  <h2 className="font-display text-xl font-semibold">Today's habits</h2>
-  <CreateHabitDialog />
-</div>
+          <h2 className="font-display text-xl font-semibold">
+            Today&apos;s habits
+          </h2>
+          <CreateHabitDialog />
         </div>
 
         {isLoading && (
@@ -85,41 +87,17 @@ export default function DashboardPage() {
             <h3 className="font-display text-lg font-semibold">
               No habits yet
             </h3>
-            <p className="mt-2 text-sm text-text-secondary max-w-sm mx-auto">
-              Create your first habit and start compounding daily wins. Add
-              habit UI coming in the next step.
+            <p className="mt-2 mb-6 text-sm text-text-secondary max-w-sm mx-auto">
+              Create your first habit and start compounding daily wins.
             </p>
+            <CreateHabitDialog />
           </div>
         )}
 
         {habits && habits.length > 0 && (
           <div className="space-y-2">
-            {habits.map((habit: { id: Key | null | undefined; color: any; icon: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; name: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; description: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; target: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
-              <div
-                key={habit.id}
-                className="flex items-center gap-3 rounded-xl border border-border bg-surface p-4 transition-all hover:border-primary-300/60 hover:shadow-soft"
-              >
-                <div
-                  className="grid h-10 w-10 shrink-0 place-items-center rounded-lg text-lg"
-                  style={{
-                    backgroundColor: `${habit.color}1A`, // 10% opacity
-                    color: habit.color,
-                  }}
-                >
-                  {habit.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium truncate">{habit.name}</p>
-                  {habit.description && (
-                    <p className="text-xs text-text-muted truncate">
-                      {habit.description}
-                    </p>
-                  )}
-                </div>
-                <p className="text-xs font-mono text-text-muted uppercase tracking-widest">
-                  Target: {habit.target}
-                </p>
-              </div>
+            {habits.map((habit) => (
+              <HabitCard key={habit.id} habit={habit} />
             ))}
           </div>
         )}
@@ -149,7 +127,9 @@ function StatCard({
   return (
     <div className="rounded-xl border border-border bg-surface p-4">
       <div className="flex items-center gap-3">
-        <div className={`grid h-9 w-9 place-items-center rounded-lg ${accentClasses[accent]}`}>
+        <div
+          className={`grid h-9 w-9 place-items-center rounded-lg ${accentClasses[accent]}`}
+        >
           <Icon className="h-4 w-4" strokeWidth={2} />
         </div>
         <div>

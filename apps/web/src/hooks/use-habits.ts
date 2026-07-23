@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/api/client";
 import { useAuth } from "@/contexts/auth-context";
 
-// ─── Types (mirror backend Prisma model) ───
+// ─── Types ───
 export type Frequency = "DAILY" | "WEEKLY" | "MONTHLY" | "CUSTOM";
 
 export interface Habit {
@@ -19,6 +19,7 @@ export interface Habit {
   isArchived: boolean;
   createdAt: string;
   updatedAt: string;
+  completedToday: boolean;
 }
 
 export interface CreateHabitInput {
@@ -30,31 +31,25 @@ export interface CreateHabitInput {
   target?: number;
 }
 
-// ─── Query Keys (centralized to prevent typos) ───
+// ─── Query Keys ───
 export const habitKeys = {
   all: ["habits"] as const,
   lists: () => [...habitKeys.all, "list"] as const,
 };
 
-/**
- * useHabits() — fetches the current user's habits with caching.
- *
- * Auto-refetches when window is focused. Returns undefined until access token loads.
- */
+// ─── QUERIES ───
 export function useHabits() {
   const { accessToken, isLoading: authLoading } = useAuth();
 
   return useQuery({
     queryKey: habitKeys.lists(),
-    queryFn: () => apiRequest<Habit[]>("/habits", { accessToken: accessToken! }),
-    enabled: !!accessToken && !authLoading, // only fetch when logged in
+    queryFn: () =>
+      apiRequest<Habit[]>("/habits", { accessToken: accessToken! }),
+    enabled: !!accessToken && !authLoading,
   });
 }
 
-/**
- * useCreateHabit() — mutation to create a new habit.
- * Auto-invalidates the habits list on success (triggers refetch).
- */
+// ─── MUTATIONS ───
 export function useCreateHabit() {
   const { accessToken } = useAuth();
   const queryClient = useQueryClient();
@@ -67,15 +62,11 @@ export function useCreateHabit() {
         accessToken: accessToken!,
       }),
     onSuccess: () => {
-      // Refetch the habits list so the new one appears
       queryClient.invalidateQueries({ queryKey: habitKeys.lists() });
     },
   });
 }
 
-/**
- * useDeleteHabit() — mutation to delete a habit.
- */
 export function useDeleteHabit() {
   const { accessToken } = useAuth();
   const queryClient = useQueryClient();
@@ -87,6 +78,74 @@ export function useDeleteHabit() {
         accessToken: accessToken!,
       }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: habitKeys.lists() });
+    },
+  });
+}
+
+/**
+ * Optimistic complete — checkbox flips instantly, rolls back if backend fails.
+ */
+export function useCompleteHabit() {
+  const { accessToken } = useAuth();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (habitId: string) =>
+      apiRequest(`/habits/${habitId}/complete`, {
+        method: "POST",
+        accessToken: accessToken!,
+      }),
+    onMutate: async (habitId) => {
+      await queryClient.cancelQueries({ queryKey: habitKeys.lists() });
+      const previous = queryClient.getQueryData<Habit[]>(habitKeys.lists());
+      queryClient.setQueryData<Habit[]>(habitKeys.lists(), (old) =>
+        (old ?? []).map((h) =>
+          h.id === habitId ? { ...h, completedToday: true } : h,
+        ),
+      );
+      return { previous };
+    },
+    onError: (_err, _habitId, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(habitKeys.lists(), context.previous);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: habitKeys.lists() });
+    },
+  });
+}
+
+/**
+ * Optimistic uncomplete — same pattern as complete.
+ */
+export function useUncompleteHabit() {
+  const { accessToken } = useAuth();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (habitId: string) =>
+      apiRequest(`/habits/${habitId}/complete`, {
+        method: "DELETE",
+        accessToken: accessToken!,
+      }),
+    onMutate: async (habitId) => {
+      await queryClient.cancelQueries({ queryKey: habitKeys.lists() });
+      const previous = queryClient.getQueryData<Habit[]>(habitKeys.lists());
+      queryClient.setQueryData<Habit[]>(habitKeys.lists(), (old) =>
+        (old ?? []).map((h) =>
+          h.id === habitId ? { ...h, completedToday: false } : h,
+        ),
+      );
+      return { previous };
+    },
+    onError: (_err, _habitId, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(habitKeys.lists(), context.previous);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: habitKeys.lists() });
     },
   });
